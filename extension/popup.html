@@ -1,17 +1,21 @@
 <!doctype html>
 <html lang="tr"><head><meta charset="utf-8"><title>Eğitim Yardımcısı</title><link rel="stylesheet" href="popup.css"></head>
 <body>
-  <h1>Eğitim Yardımcısı</h1>
-  <p>Başlamadıklarım sekmesini açın. Eğitimler kısadan uzuna sıralanır; 11 sa 50 dk en sona bırakılır. Videolarda yüklenen ve ileri sarılabilen bölümün sonuna ilerlenir.</p>
-  <button id="autoStart">Başlamadıklarım — otomatik başlat</button>
+  <h1>Eğitim Yardımcısı <small>1.3.3</small></h1>
+  <p>Başlamadıklarım listesindeysen eğitimleri kısadan uzuna işler; 11 sa 50 dk en sona kalır. Bir eğitimin içindeysen kalan içerikleri liste sırasıyla işler. Videoyu açar, izin verilen bölüme ilerler; varsa 2× hız seçeneğini kullanır.</p>
+  <button id="autoStart">Bulunduğum sayfadan otomatik başlat</button>
+  <small>Her slaytta en az 2 saniye bekler. Sınav, ön test ve son testleri hariç tutmaz; rastgele cevaplayıp gönderir ve devam eder.</small>
+  
+  <button id="stop">Durdur</button>
+  <p id="status" role="status"></p>
   <button id="report">İşlem raporunu indir</button>
   <p id="summary"></p>
-  <h2>Elle seçim / algılama düzeltmeleri</h2>
+  <details><summary>Eğitim sırası</summary><ol id="queue"></ol></details>
+  <details><summary>Elle seçim / algılama düzeltmeleri</summary>
   <p>Her slaytta en az 2 saniye bekler. Seçim düğmesine basıp sayfadaki ilgili öğeye tıklayın.</p>
   <h2>1. Eğitim listesinde</h2>
   <button data-kind="item">Sıraya eğitim ekle</button>
   <button data-kind="launch">Devam Et / Başla düğmesini seç</button>
-  <ol id="queue"></ol>
   <h2>2. Slaytı elle açıp tanıtın</h2>
   <button data-kind="next">Sağ ok (ilerle) düğmesini seç</button>
   <button data-kind="progress">Yüzde yazısını seç (ör. %8)</button>
@@ -19,10 +23,9 @@
   <button data-kind="close">Sağ üst kapat (X) düğmesini seç</button>
   <p id="bindings"></p>
   <h2>3. Eğitim listesine dönün</h2>
-  <button id="start">Başlat — sıranın başından</button>
-  <button id="stop">Durdur</button>
-  <p id="status" role="status"></p>
+  <button id="start">Elle seçilen sırayı başlat</button>
   <button id="clear">Tüm seçimleri temizle</button>
+  </details>
   <small>Esc ile durdurabilirsiniz. Bu eklenti yalnızca görünür düğmelere tıklar; tamamlanma kaydını platform belirler.</small>
   <script src="popup.js"></script>
 </body></html>

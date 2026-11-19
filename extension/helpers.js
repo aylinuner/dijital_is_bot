@@ -28,5 +28,14 @@
     }
     return null;
   }
-  globalThis.educationHelpers={durationMinutes,sortByDuration,seekTarget};
+  // Pre-tests ("Ön Test", "Ön Test Sınavı", "Pre-test") are answered randomly instead of being excluded.
+  const preTestSource='(^|[^\\p{L}])(?:ön|on|pre)[\\s-]*test[\\p{L}]*(?:\\s+s[ıi]nav[\\p{L}]*)?(?=$|[^\\p{L}])';
+  function isPreTestText(value) {
+    return new RegExp(preTestSource,'u').test(String(value ?? '').toLocaleLowerCase('tr-TR'));
+  }
+  function isExamText(value) {
+    const s=String(value ?? '').toLocaleLowerCase('tr-TR').replace(new RegExp(preTestSource,'gu'),'$1 ');
+    return /(^|[^\p{L}])(?:s[ıi]nav[\p{L}]*|quiz|exam|assessment|son\s+test)(?=$|[^\p{L}])/u.test(s);
+  }
+  globalThis.educationHelpers={durationMinutes,sortByDuration,seekTarget,isExamText,isPreTestText};
 })();

@@ -10,7 +10,7 @@ async function active() {
   return tab;
 }
 async function refresh() {
-  const {config, state} = await send({type: 'get'});
+  const {config, state, excludedModules=[]} = await send({type: 'get'});
   $('status').textContent = state.status;
   $('summary').textContent = state.results ? `${state.modules.length} modül bulundu · ${state.results.filter(x => x.outcome === 'done').length} tamamlanma görüldü · ${state.results.filter(x => x.outcome === 'skipped').length} atlandı` : '';
   $('queue').replaceChildren(...(state.mode === 'auto' ? state.modules : config.items).map((item, index) => {
@@ -31,8 +31,8 @@ document.addEventListener('click', async e => {
     if (button.id === 'start') await send({type: 'start', tabId: (await active()).id});
     if (button.id === 'autoStart') await send({type: 'autoStart', tabId: (await active()).id});
     if (button.id === 'report') {
-      const {state} = await send({type: 'get'});
-      const url = URL.createObjectURL(new Blob([JSON.stringify({status: state.status, results: state.results || []}, null, 2)], {type: 'application/json'}));
+      const {state, excludedModules} = await send({type: 'get'});
+      const url = URL.createObjectURL(new Blob([JSON.stringify({status: state.status, results: state.results || [], excludedModules}, null, 2)], {type: 'application/json'}));
       const link = document.createElement('a'); link.href = url; link.download = 'egitim-raporu.json'; link.click();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     }

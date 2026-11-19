@@ -1,0 +1,17 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+html,body{margin:0;height:100%;overflow:hidden}#catalog{height:300px;width:600px;overflow-y:auto}.card{height:260px;cursor:pointer;background:linear-gradient(#eee,#ddd);padding:20px}.art{height:170px;background:linear-gradient(45deg,blue,white)}
+</style></head><body><h1>Başlamadıklarım</h1><main id="catalog">
+<div class="card" data-minutes="710"><div class="art"></div><h2>Uzun eğitim</h2><span>11 sa 50 dk</span></div>
+<div class="card" data-minutes="85"><div class="art"></div><h2>Orta eğitim</h2><span>1 sa 25 dk</span></div>
+<div class="card" data-minutes="24"><div class="art"></div><h2>Kısa eğitim</h2><span>24 dk</span></div>
+</main><script>
+document.querySelectorAll('.card').forEach(card=>card.onclick=()=>{
+ document.body.dataset.module=card.dataset.minutes;
+ history.pushState({},'', '/mlpcareakademi/eep/main/activity/'+card.dataset.minutes);
+ document.querySelector('main').outerHTML='<section><div class="row unit-info-left-block"><h3 class="unit-info-title">Uzun içerik</h3><span class="unit-info-type-name">E-Eğitim - <span>9 dk</span></span></div><div class="row unit-info-left-block"><h3 class="unit-info-title">Kısa içerik</h3><span class="unit-info-type-name">E-Eğitim - <span>3 dk</span></span></div></section><span>0%</span><div><textarea></textarea><span>0 / 4000</span></div><button id="launch">Başla</button>';
+ document.querySelectorAll('.row').forEach(row=>row.onclick=()=>document.body.dataset.lesson=row.querySelector('h3').textContent);
+ document.getElementById('launch').onclick=()=>{document.body.dataset.launched='yes';
+  if(!document.getElementById('resume'))document.body.insertAdjacentHTML('beforeend','<div class="dialog"><p>Eğitime kaldığın yerden devam etmek ister misin?</p><div id="resume" style="cursor:pointer"><i class="material-icons">play_arrow</i><span>Kaldığın Yerden Devam Et</span></div><div style="cursor:pointer">Baştan Başla</div></div>');
+  document.getElementById('resume').onclick=()=>{document.body.dataset.resumed='yes';document.querySelector('.dialog').remove();};};
+});
+</script></body></html>

@@ -21,7 +21,11 @@
     picking = null; banner?.remove(); banner = null;
     if (marked) { marked.style.outline = marked.dataset.deOldOutline || ''; delete marked.dataset.deOldOutline; marked = null; }
   }
-  chrome.runtime.onMessage.addListener(m => {
+  chrome.runtime.onMessage.addListener((m, sender, reply) => {
+    if (m.type === 'ping') {
+      reply({version: chrome.runtime.getManifest().version, ready: typeof window.educationAutoTick === 'function' && Boolean(globalThis.educationHelpers)});
+      return;
+    }
     if (m.type === 'cancelPick') { cleanup(); return; }
     if (m.type !== 'pick') return;
     cleanup(); picking = m.kind;
@@ -66,6 +70,8 @@
       const list = visible(elements.item) && label(elements.item).slice(0, 160) === config.items[state.index]?.label;
       const player = Boolean(visible(elements.progress) && visible(elements.counter));
       const observation = {list: Boolean(list), player,
+        moduleTitle:document.querySelector('.activity-info h3,h1')?.textContent.trim()||'',
+        examText:globalThis.educationHelpers.isExamText(document.body.innerText),
         counter: elements.counter ? label(elements.counter) : '', percent: percent(elements.progress),
         next: Boolean(enabled(elements.next)), close: Boolean(enabled(elements.close)), launch: Boolean(enabled(elements.launch))};
       const {action} = await chrome.runtime.sendMessage({type: 'tick', observation});
@@ -73,7 +79,10 @@
         const current = await chrome.runtime.sendMessage({type: 'get'});
         if (current.state.running) elements[action].click();
       }
-    } catch (error) { console.debug('Eğitim yardımcısı:', error.message); }
+    } catch (error) {
+      console.warn('Eğitim yardımcısı:', error.message);
+      try { await chrome.runtime.sendMessage({type: 'autoError', text: error.message}); } catch {}
+    }
     finally { busy = false; }
   }
   setInterval(tick, 400);
