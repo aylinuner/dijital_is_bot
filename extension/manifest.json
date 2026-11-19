@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Dijital İş Eğitim Yardımcısı",
+  "version": "1.2.0",
+  "description": "Seçilen eğitimlerde slaytları bekleyerek ilerletir ve görünen tamamlanma oranını izler.",
+  "permissions": ["storage", "activeTab"],
+  "background": {"service_worker": "background.js", "type": "module"},
+  "action": {"default_popup": "popup.html"},
+  "content_scripts": [{
+    "matches": ["https://akademi.mlpcare.com/*"],
+    "js": ["helpers.js", "auto-content.js", "content.js"],
+    "all_frames": true,
+    "match_about_blank": true,
+    "run_at": "document_idle"
+  }]
+}
